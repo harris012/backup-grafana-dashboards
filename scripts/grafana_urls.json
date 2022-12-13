@@ -1,0 +1,17 @@
+{
+  "grafana_urls": [
+    {
+      "name": "<folder-name>",
+      "url": "<grafana-url>",
+      "username": "<user>",
+      "password" : "<passowrd>",
+      "verify_ssl": "True"
+    }
+  ],
+  "backup": {
+    "local": {
+      "backup_folder": "backup/",
+      "enabled": true
+    }
+  }
+}
