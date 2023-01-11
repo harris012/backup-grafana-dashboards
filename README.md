@@ -19,8 +19,8 @@ For example, if a pod gets deployed with an annotation.”vault.hashicorp.com/ag
 
 1. Custom MutatingWebhookConfiguration sends a webhook with all pod information to the injector controller deployment.
 2. Then the controller modifies the Pod spec in runtime to introduce a sidecar and init container agents to the actual pod specification.
-3. Controller then returns the modifed object for object validation.
-4. After validation the modified pod spec gets deloyed with a sidecar and init container.
+3. Controller then returns the modified object for object validation.
+4. After validation the modified pod spec gets deployed with a sidecar and init container.
 
 ![image](https://user-images.githubusercontent.com/57041349/211672964-00d05727-a80e-4d89-bc91-ae569066ca80.png)
 
