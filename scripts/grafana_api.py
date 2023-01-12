@@ -46,13 +46,11 @@ class GrafanaApi:
 
     def search_db(self):
         folder_id = 1256
-        response = self.get(f"search?folderIds={folder_id}type=dash-db")
+        response = self.get(f"search?folderIds={folder_id}&type=dash-db")
         return response
 
-    def search_folder(self, folder_id):
-        url = "{}/api/folders/id/{}".format(self.grafana_url, folder_id)
-        get_logger().info("Request To : URL {}")
-        response = requests.get(url)
+    def search_folder_id(self, folder_id):
+        response = self.get(f"folders/")
         return response
 
     def dashboard_details(self, dashboard_uid):
