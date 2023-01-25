@@ -20,6 +20,7 @@ class GrafanaApi:
     """
     HTTP REST calls with status code checking and common auth/headers
     """
+
     def __init__(self, grafana_url, user, password) -> None:
         self.grafana_url = grafana_url
         self.user = user
@@ -50,7 +51,9 @@ class GrafanaApi:
 
     def get_folder_id(self):
         response = self.get(f"folders/")
-        folder = list(filter(lambda x: x['title'] == '<your-folder-in-grafana-instance>', response))  # edit me
+        folder = list(
+            filter(lambda x: x['title'] == '<your-folder-in-grafana-instance>',
+                   response))  # edit me
         for k in folder:
             grafana_folder_id = int(k['id'])
             grafana_folder_name = str(k['title'])
