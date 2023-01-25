@@ -50,7 +50,7 @@ class GrafanaApi:
 
     def get_folder_id(self):
         response = self.get(f"folders/")
-        folder = list(filter(lambda x: x['title'] == '<your-folder-title>', response))  # edit me
+        folder = list(filter(lambda x: x['title'] == '<your-folder-in-grafana-instance>', response))  # edit me
         for k in folder:
             grafana_folder_id = int(k['id'])
             grafana_folder_name = str(k['title'])
