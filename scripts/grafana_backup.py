@@ -17,12 +17,16 @@ class GrafanaBackupManager:
     grafana_config = "config.json"
     config_path = "/vault/secrets/config.json"
 
-    def __init__(self, name, grafana_url, user, password):
+    def __init__(self, name, grafana_url, user, password, verify_ssl,
+                 client_cert):
         self.name = name
         self.user = user
         self.password = password
+        self.verify_ssl = verify_ssl
+        self.clint_cert = client_cert
         self.backup_dir = "/{}/".format(current_date) + self.name + "/"
-        self.grafana_api = grafana_api.GrafanaApi(grafana_url, user, password)
+        self.grafana_api = grafana_api.GrafanaApi(grafana_url, user, password,
+                                                  verify_ssl, client_cert)
         self.backup_folder = "backup"
 
     def dashboard_backup(self, folder_name):
@@ -70,7 +74,7 @@ class GrafanaBackupManager:
                     self.name.title()))
         except Exception as exc:
             grafana_api.get_logger().error(
-                "Error creating meteadata : {}".format(str(exc)))
+                "Error creating metadata : {}".format(str(exc)))
 
     def __store(self, folder_name, file_name, response):
         try:
@@ -121,8 +125,12 @@ def backup_grafana_dashboard():
     grafana_secrets = GrafanaBackupManager.get_grafana_content(
         GrafanaBackupManager.grafana_config)
     user = grafana_secrets['user']
-    password = grafana_secrets['pw']
-    gbm = GrafanaBackupManager(name, url, user, password)
+    password = grafana_secrets['password']
+    verify_ssl = grafana_api.ssl_verify
+    client_cert = grafana_api.CA_BUNDLES
+
+    gbm = GrafanaBackupManager(name, url, user, password, verify_ssl,
+                               client_cert)
     try:
         gbm.daily_backup()
     except Exception as e:
@@ -135,13 +143,15 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='Grafana backup script.')
     parser.add_argument(
         '-name',
-        '--dir_name',
+        '--name',
         type=str,
         help="folder name of the backup directory in pvc it will be created")
-    parser.add_argument('-url',
-                        '--grafana_url',
-                        type=str,
-                        help="Url of the grafana source")
+    parser.add_argument(
+        '-url',
+        '--grafana_url',
+        type=str,
+        help=
+        "Url of the grafana source i.e: https://grafana.com")
     parser.add_argument('-conf',
                         '--config_file',
                         type=str,
